@@ -1,30 +1,22 @@
-import { pgTable, text, uuid, serial, integer, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, text, uuid, integer, timestamp } from "drizzle-orm/pg-core";
 
-// Users
+// Users table with credits merged
 export const users = pgTable("users", {
   id: uuid("id").primaryKey().defaultRandom(),
   clerkId: text("clerk_id").notNull().unique(),
   email: text("email"),
+  credits: integer("credits").default(1000), // user's credit balance
   createdAt: timestamp("created_at").defaultNow(),
-});
-
-// Credits
-export const credits = pgTable("credits", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  userId: uuid("user_id").notNull(),
-  balance: integer("balance").default(0),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
-// History table
+// History table linked to users
 export const history = pgTable("history", {
   id: uuid("id").primaryKey().defaultRandom(),
-  userId: uuid("user_id").notNull(),
+  userId: uuid("user_id").notNull(), // FK reference to users.id
   serviceSlug: text("service_slug"),
-  prompt: text("prompt"),
   responseHtml: text("response_html"),
   responseText: text("response_text"),
   creditsConsumed: integer("credits_consumed"),
-  tokens: integer("tokens"),
   createdAt: timestamp("created_at").defaultNow(),
 });
