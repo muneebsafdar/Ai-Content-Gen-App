@@ -7,7 +7,6 @@ import { users } from "@/db/schema";
 export async function POST(req: Request) {
   const payload = await req.text();
 
-  // Await headers() to fix TypeScript error
   const headerList = await headers();
 
   const svix_id = headerList.get("svix-id");
@@ -27,20 +26,33 @@ export async function POST(req: Request) {
       "svix-timestamp": svix_timestamp,
       "svix-signature": svix_signature,
     }) as any;
+
+    console.log("✅ Webhook verified:", evt.type);
   } catch (err) {
     console.error("❌ Webhook verification failed:", err);
     return new Response("Invalid signature", { status: 400 });
   }
 
-  // ✅ FIX: Access evt.data directly (evt is already the parsed webhook)
   if (evt.type === "user.created") {
     const { data } = evt;
 
-    await db.insert(users).values({
-      clerkId: data.id,
-      email: data.email_addresses[0].email_address,
-      credits: 1000,
-    });
+    try {
+      await db.insert(users).values({
+        clerkId: data.id,
+        email: data.email_addresses[0].email_address,
+        credits: 1000,
+      });
+      
+      console.log("✅ User created successfully:", data.id);
+    } catch (dbError) {
+      console.error("❌ Database error:", dbError);
+      // Return 200 to prevent Clerk from retrying
+      // (since the webhook was valid, just DB connection failed)
+      return NextResponse.json({ 
+        success: false, 
+        error: "Database connection error" 
+      }, { status: 200 });
+    }
   }
 
   return NextResponse.json({ success: true });
