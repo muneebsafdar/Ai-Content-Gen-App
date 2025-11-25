@@ -45,13 +45,13 @@ export default function GetResponse({ params }: any) {
 
 
   const SaveResponseandDeductCredits = async () => {
-   const deductResponse = await fetch("/api/credits/deduct", {
+   const deductResponse = await fetch("/api/sub_credits", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ creditsToDeduct: service?.credits || 0 }),
 });
 
-    const saveResponse = await fetch("/api/history/save", {
+    const saveResponse = await fetch("/api/save_gen_res", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
