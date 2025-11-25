@@ -37,6 +37,7 @@ export default function GetResponse({ params }: any) {
       const responseText = resp.data.text;
       console.log(responseText);
       setResponse(responseText);
+      SaveResponseandDeductCredits()
     } catch (error) {
       console.error("API Error:", error);
       setResponse("Error: Failed to get response");
