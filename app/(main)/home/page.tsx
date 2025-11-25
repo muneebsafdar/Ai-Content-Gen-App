@@ -2,8 +2,10 @@
 
 import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { FileText, Youtube, Edit3 } from "lucide-react"; // Import relevant Lucide icons
+import { FileText, Youtube, Edit3,Code,Mail,PenTool } from "lucide-react"; // Import relevant Lucide icons
 import { services } from "@/app/services_json_object/services";
+import { useRouter } from "next/navigation";
+
 
 const COLORS = {
   primary: "#1d3557",
@@ -18,37 +20,67 @@ const serviceIcons: Record<string, React.ReactNode> = {
   "Paraphrase Tool": <Edit3 className="w-10 h-10" />,
   "YouTube Title Generator": <Youtube className="w-10 h-10" />,
   "Script Writing Tool": <FileText className="w-10 h-10" />,
+  "Code Generator": <Code className="w-10 h-10" />,
+  "Blog Ideas Generator": <PenTool className="w-10 h-10" />,
+  "Email Writer": <Mail className="w-10 h-10" />,
 };
 
 export default function Home() {
+  const router=useRouter()
   const [search, setSearch] = useState("");
 
   const filteredServices = services.filter((service) =>
     service.title.toLowerCase().includes(search.toLowerCase())
   );
 
+  const pushToService = (slug: string) => {
+    router.push(`/getresponse/${slug}`);
+  };
+
   return (
     <div className="min-h-screen p-6" style={{ backgroundColor: COLORS.bg }}>
       {/* Search Bar */}
-      <div className="mb-6 flex justify-center">
-        <input
-          type="text"
-          placeholder="Search services..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="w-full max-w-md p-3 rounded-lg border-2 focus:outline-none focus:ring-2"
-          style={{
-            borderColor: COLORS.accent,
-            backgroundColor: COLORS.light,
-            color: COLORS.primary,
-          }}
-        />
-      </div>
+     <div className="mb-10 flex justify-center">
+  <div className="relative w-full max-w-2xl">
+    {/* Search Icon */}
+    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[#1d3557] opacity-70">
+      🔍
+    </span>
+
+    <input
+      type="text"
+      placeholder="Search amazing AI tools..."
+      value={search}
+      onChange={(e) => setSearch(e.target.value)}
+      className="
+        w-full 
+        pl-12 pr-4 
+        py-4 
+        text-lg
+        rounded-2xl 
+        border-2 
+        shadow-md
+        transition-all
+        outline-none
+        bg-white
+        placeholder:text-gray-400
+        focus:ring-4
+        focus:ring-[#a8dadc]
+        focus:border-[#1d3557]
+        focus:shadow-xl
+      "
+      style={{
+        borderColor: COLORS.accent,
+      }}
+    />
+  </div>
+</div>
 
       {/* Services Grid */}
       <div className="grid md:grid-cols-3 gap-6">
         {filteredServices.map((service) => (
           <Card
+            onClick={() => pushToService(service.slug)}
             key={service.title}
             className="hover:shadow-xl transition-shadow p-4 flex flex-col items-start gap-4"
             style={{ backgroundColor: COLORS.light }}

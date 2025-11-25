@@ -4,7 +4,7 @@ import { pgTable, text, uuid, integer, timestamp } from "drizzle-orm/pg-core";
 export const users = pgTable("users", {
   id: uuid("id").primaryKey().defaultRandom(),
   clerkId: text("clerk_id").notNull().unique(),
-  email: text("email"),
+  email: text("email").unique(),
   credits: integer("credits").default(1000), // user's credit balance
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
