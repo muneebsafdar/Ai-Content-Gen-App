@@ -43,6 +43,27 @@ export default function GetResponse({ params }: any) {
     }
   };
 
+
+  const SaveResponseandDeductCredits = async () => {
+   const deductResponse = await fetch("/api/credits/deduct", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ creditsToDeduct: service?.credits || 0 }),
+});
+
+    const saveResponse = await fetch("/api/history/save", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        responseText: response,
+        serviceSlug: service?.slug,
+        creditsConsumed: service?.credits || 0 ,
+      }),
+    });
+
+  }
+
+
   // 🟢 Update Toast UI Editor whenever response changes
   useEffect(() => {
     if (editorRef.current) {

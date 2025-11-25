@@ -15,7 +15,6 @@ export const history = pgTable("history", {
   id: uuid("id").primaryKey().defaultRandom(),
   userId: uuid("user_id").notNull(), // FK reference to users.id
   serviceSlug: text("service_slug"),
-  responseHtml: text("response_html"),
   responseText: text("response_text"),
   creditsConsumed: integer("credits_consumed"),
   createdAt: timestamp("created_at").defaultNow(),
