@@ -1,6 +1,6 @@
 "use client"
 
-import React, { AnyActionArg, useState } from 'react';
+import React, { AnyActionArg, useEffect, useState } from 'react';
 import { Copy, Check, Clock, Coins } from 'lucide-react';
 
 
@@ -20,12 +20,16 @@ export default function History() {
   const [showToast, setShowToast] = useState(false);
   const [history,sethistory] = useState([]);
 
-  const mockHistory = async ()=>{
+  const GetHistory = async ()=>{
     const response = await fetch("/api/get_history");
     const data = await response.json();
     sethistory(data);
   }
 
+  useEffect(()=>{
+    GetHistory()
+  },[])
+  
   const truncateText = (text:any, maxLength = 100) => {
     if (text.length <= maxLength) return text;
     return text.substring(0, maxLength) + '...';
@@ -199,7 +203,7 @@ export default function History() {
         </div>
 
         {/* Empty State */}
-        {mockHistory.length === 0 && (
+        {history.length === 0 && (
           <div style={{
             background: 'white',
             border: `1px solid ${COLORS.light}`,
