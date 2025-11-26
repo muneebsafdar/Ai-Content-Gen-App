@@ -37,7 +37,7 @@ export default function GetResponse({ params }: any) {
       const responseText = resp.data.text;
       console.log(responseText);
       setResponse(responseText);
-      SaveResponseandDeductCredits()
+      SaveResponseandDeductCredits(responseText)
     } catch (error) {
       console.error("API Error:", error);
       setResponse("Error: Failed to get response");
@@ -45,7 +45,7 @@ export default function GetResponse({ params }: any) {
   };
 
 
-  const SaveResponseandDeductCredits = async () => {
+  const SaveResponseandDeductCredits = async (responseText: any) => {
    const deductResponse = await fetch("/api/sub_credits", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -56,7 +56,7 @@ export default function GetResponse({ params }: any) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        responseText: response,
+        responseText: responseText,
         serviceSlug: service?.slug,
         creditsConsumed: service?.credits || 0 ,
       }),
