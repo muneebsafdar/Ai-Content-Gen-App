@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { useEffect, useState } from 'react';
 import { Copy, Check, Clock, Coins } from 'lucide-react';
@@ -11,7 +11,6 @@ const COLORS = {
   danger: "#e63946",
 };
 
-// Service name mapping
 const serviceNames: Record<string, string> = {
   'youtube-title-generator': 'YouTube Title Generator',
   'blog-ideas-generator': 'Blog Ideas Generator',
@@ -33,8 +32,7 @@ export default function History() {
       setLoading(true);
       const response = await fetch("/api/get_history");
       const data = await response.json();
-      
-      // Fix: Access the history array from the response
+
       if (data.history && Array.isArray(data.history)) {
         setHistory(data.history);
       } else {
@@ -64,14 +62,9 @@ export default function History() {
       await navigator.clipboard.writeText(text);
       setCopiedId(id);
       setShowToast(true);
-      
-      setTimeout(() => {
-        setCopiedId(null);
-      }, 2000);
 
-      setTimeout(() => {
-        setShowToast(false);
-      }, 3000);
+      setTimeout(() => setCopiedId(null), 2000);
+      setTimeout(() => setShowToast(false), 3000);
     } catch (err) {
       console.error('Failed to copy:', err);
     }
@@ -82,132 +75,93 @@ export default function History() {
     const now = new Date();
     const diff = now.getTime() - date.getTime();
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    
+
     if (days === 0) return 'Today';
     if (days === 1) return 'Yesterday';
     if (days < 7) return `${days} days ago`;
-    
-    return date.toLocaleDateString('en-US', { 
-      month: 'short', 
+
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
       day: 'numeric',
-      year: date.getFullYear() !== now.getFullYear() ? 'numeric' : undefined
+      year: date.getFullYear() !== now.getFullYear() ? 'numeric' : undefined,
     });
   };
 
   const getServiceName = (slug: string) => {
-    return serviceNames[slug] || slug.split('-').map(word => 
-      word.charAt(0).toUpperCase() + word.slice(1)
-    ).join(' ');
+    return serviceNames[slug] ||
+      slug.split('-').map(word =>
+        word.charAt(0).toUpperCase() + word.slice(1)
+      ).join(' ');
   };
 
   if (loading) {
     return (
-      <div style={{ 
-        background: COLORS.bg,
-        minHeight: '100vh',
-        padding: '24px',
-        fontFamily: 'system-ui, -apple-system, sans-serif',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-      }}>
-        <div style={{ textAlign: 'center' }}>
-          <div style={{
-            width: '48px',
-            height: '48px',
-            border: `4px solid ${COLORS.light}`,
-            borderTop: `4px solid ${COLORS.primary}`,
-            borderRadius: '50%',
-            animation: 'spin 1s linear infinite',
-            margin: '0 auto 16px'
-          }} />
-          <p style={{ color: COLORS.accent, fontSize: '16px' }}>Loading history...</p>
+      <div
+        className="min-h-screen flex items-center justify-center p-6"
+        style={{ background: COLORS.bg }}
+      >
+        <div className="text-center">
+          <div
+            className="w-12 h-12 rounded-full mx-auto mb-4 border-4 animate-spin"
+            style={{
+              borderColor: COLORS.light,
+              borderTopColor: COLORS.primary
+            }}
+          />
+          <p className="text-base" style={{ color: COLORS.accent }}>
+            Loading history...
+          </p>
         </div>
-        <style>{`
-          @keyframes spin {
-            to { transform: rotate(360deg); }
-          }
-        `}</style>
       </div>
     );
   }
 
   return (
-    <div style={{ 
-      background: COLORS.bg,
-      minHeight: '100vh',
-      padding: '24px',
-      fontFamily: 'system-ui, -apple-system, sans-serif'
-    }}>
-      <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
+    <div
+      className="min-h-screen p-6 mb-10 overflow-scroll"
+      style={{ background: COLORS.bg }}
+    >
+      <div className="max-w-4xl mx-auto">
+
         {/* Header */}
-        <div style={{ marginBottom: '32px' }}>
-          <h1 style={{ 
-            fontSize: '32px', 
-            fontWeight: '700',
-            color: COLORS.primary,
-            margin: '0 0 8px'
-          }}>
+        <div className="mb-8">
+          <h1
+            className="text-3xl font-bold mb-2"
+            style={{ color: COLORS.primary }}
+          >
             History
           </h1>
-          <p style={{ 
-            fontSize: '16px', 
-            color: COLORS.accent,
-            margin: 0
-          }}>
+          <p className="text-base" style={{ color: COLORS.accent }}>
             View and manage your generated content
           </p>
         </div>
 
         {/* History List */}
         {history.length > 0 ? (
-          <div style={{ 
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '16px'
-          }}>
+          <div className="flex flex-col gap-4">
             {history.map((item: any) => (
               <div
                 key={item.id}
-                style={{
-                  background: 'white',
-                  border: `1px solid ${COLORS.light}`,
-                  borderRadius: '12px',
-                  padding: '24px',
-                  transition: 'all 0.2s ease'
-                }}
+                className="bg-white border rounded-xl p-6 transition-all"
+                style={{ borderColor: COLORS.light }}
               >
                 {/* Header Row */}
-                <div style={{ 
-                  display: 'flex', 
-                  justifyContent: 'space-between',
-                  alignItems: 'flex-start',
-                  marginBottom: '16px',
-                  gap: '16px',
-                  flexWrap: 'wrap'
-                }}>
-                  <div style={{ flex: 1, minWidth: '250px' }}>
-                    <h3 style={{ 
-                      fontSize: '18px', 
-                      fontWeight: '600',
-                      color: COLORS.primary,
-                      margin: '0 0 8px'
-                    }}>
+                <div className="flex justify-between gap-4 flex-wrap mb-4">
+                  <div className="flex-1 min-w-[250px]">
+                    <h3
+                      className="text-lg font-semibold mb-2"
+                      style={{ color: COLORS.primary }}
+                    >
                       {getServiceName(item.serviceSlug)}
                     </h3>
-                    <div style={{ 
-                      display: 'flex', 
-                      alignItems: 'center',
-                      gap: '16px',
-                      fontSize: '14px',
-                      color: COLORS.accent,
-                      flexWrap: 'wrap'
-                    }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+
+                    <div className="flex items-center gap-6 text-sm flex-wrap" style={{ color: COLORS.accent }}>
+                      <div className="flex items-center gap-1">
                         <Clock size={16} />
                         <span>{formatDate(item.createdAt)}</span>
                       </div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+
+                      <div className="flex items-center gap-1">
                         <Coins size={16} />
                         <span>{item.creditsConsumed} credits</span>
                       </div>
@@ -217,51 +171,34 @@ export default function History() {
                   {/* Copy Button */}
                   <button
                     onClick={() => handleCopy(item.responseText, item.id)}
+                    className="flex items-center gap-2 px-5 py-2.5 rounded-lg font-medium text-sm border transition-all"
                     style={{
                       background: copiedId === item.id ? COLORS.accent : COLORS.bg,
-                      color: copiedId === item.id ? 'white' : COLORS.primary,
-                      border: `1px solid ${copiedId === item.id ? COLORS.accent : COLORS.light}`,
-                      padding: '10px 20px',
-                      borderRadius: '8px',
-                      cursor: 'pointer',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '8px',
-                      fontSize: '14px',
-                      fontWeight: '500',
-                      transition: 'all 0.2s ease',
-                      flexShrink: 0
+                      color: copiedId === item.id ? "white" : COLORS.primary,
+                      borderColor: copiedId === item.id ? COLORS.accent : COLORS.light,
                     }}
                   >
                     {copiedId === item.id ? (
                       <>
-                        <Check size={16} />
-                        Copied
+                        <Check size={16} /> Copied
                       </>
                     ) : (
                       <>
-                        <Copy size={16} />
-                        Copy
+                        <Copy size={16} /> Copy
                       </>
                     )}
                   </button>
                 </div>
 
                 {/* Response Text */}
-                <div style={{
-                  background: COLORS.bg,
-                  padding: '16px',
-                  borderRadius: '8px',
-                  border: `1px solid ${COLORS.light}`
-                }}>
-                  <p style={{ 
-                    fontSize: '15px', 
-                    color: COLORS.primary,
-                    margin: 0,
-                    lineHeight: '1.6',
-                    wordBreak: 'break-word',
-                    whiteSpace: 'pre-wrap'
-                  }}>
+                <div
+                  className="p-4 rounded-lg border"
+                  style={{ background: COLORS.bg, borderColor: COLORS.light }}
+                >
+                  <p
+                    className="text-base leading-relaxed whitespace-pre-wrap break-words"
+                    style={{ color: COLORS.primary }}
+                  >
                     {truncateText(item.responseText, 150)}
                   </p>
                 </div>
@@ -270,63 +207,37 @@ export default function History() {
           </div>
         ) : (
           /* Empty State */
-          <div style={{
-            background: 'white',
-            border: `1px solid ${COLORS.light}`,
-            borderRadius: '12px',
-            padding: '48px 24px',
-            textAlign: 'center'
-          }}>
-            <div style={{
-              width: '64px',
-              height: '64px',
-              background: COLORS.bg,
-              borderRadius: '50%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              margin: '0 auto 16px'
-            }}>
+          <div
+            className="bg-white border rounded-xl p-12 text-center"
+            style={{ borderColor: COLORS.light }}
+          >
+            <div
+              className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
+              style={{ background: COLORS.bg }}
+            >
               <Clock size={32} color={COLORS.accent} />
             </div>
-            <h3 style={{ 
-              fontSize: '20px', 
-              fontWeight: '600',
-              color: COLORS.primary,
-              margin: '0 0 8px'
-            }}>
+
+            <h3
+              className="text-xl font-semibold mb-2"
+              style={{ color: COLORS.primary }}
+            >
               No History Yet
             </h3>
-            <p style={{ 
-              fontSize: '15px', 
-              color: COLORS.accent,
-              margin: 0
-            }}>
+
+            <p className="text-base" style={{ color: COLORS.accent }}>
               Start using our tools to see your history here
             </p>
           </div>
         )}
       </div>
 
-      {/* Toast Notification (Sonner-style) */}
+      {/* Toast Notification */}
       {showToast && (
-        <div style={{
-          position: 'fixed',
-          bottom: '24px',
-          right: '24px',
-          background: COLORS.primary,
-          color: 'white',
-          padding: '16px 24px',
-          borderRadius: '8px',
-          boxShadow: '0 4px 24px rgba(29, 53, 87, 0.2)',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '12px',
-          fontSize: '14px',
-          fontWeight: '500',
-          zIndex: 1000,
-          animation: 'slideIn 0.3s ease'
-        }}>
+        <div
+          className="fixed bottom-6 right-6 px-6 py-4 rounded-lg shadow-xl flex items-center gap-3 text-white text-sm font-medium z-50 animate-[slideIn_0.3s_ease]"
+          style={{ background: COLORS.primary }}
+        >
           <Check size={20} />
           <span>Content copied to clipboard</span>
         </div>
@@ -334,14 +245,8 @@ export default function History() {
 
       <style>{`
         @keyframes slideIn {
-          from {
-            transform: translateX(400px);
-            opacity: 0;
-          }
-          to {
-            transform: translateX(0);
-            opacity: 1;
-          }
+          from { transform: translateX(400px); opacity: 0; }
+          to { transform: translateX(0); opacity: 1; }
         }
       `}</style>
     </div>

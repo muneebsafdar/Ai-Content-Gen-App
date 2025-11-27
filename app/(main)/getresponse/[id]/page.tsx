@@ -16,7 +16,7 @@ export default function GetResponse({ params }: any) {
   const [inputText, setInputText] = React.useState("");
   const [response, setResponse] = React.useState("");
 
-  // FIX: Editor ref must have initial value to avoid TS error
+  //Editor ref must have initial value to avoid TS error
   const editorRef = useRef<any>(null);
 
   const handleSubmit = async () => {
@@ -73,7 +73,7 @@ export default function GetResponse({ params }: any) {
   }, [response]);
 
   return (
-    <div className="flex w-full min-h-screen overflow-scroll p-6 gap-6 bg-[#f1faee]">
+    <div className="flex w-full min-h-screen overflow-scroll p-6 gap-6 mt-15 bg-[#f1faee]">
       {/* LEFT SIDE */}
       <div className="w-1/3 bg-white shadow-md rounded-xl p-5 flex flex-col gap-4">
         <h2 className="text-xl font-bold text-[#1d3557]">

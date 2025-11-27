@@ -15,7 +15,6 @@ const COLORS = {
 const navItems = [
   { label: "Home", href: "/home" },
   { label: "History", href: "/history" },
-  { label: "Billing", href: "/billing" },
   { label: "Settings", href: "/settings" },
 ];
 

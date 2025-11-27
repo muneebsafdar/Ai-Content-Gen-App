@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { FileText, Youtube, Edit3,Code,Mail,PenTool } from "lucide-react"; // Import relevant Lucide icons
+import { FileText, Youtube, Edit3,Code,Mail,PenTool,CheckCircle,MessageCircle,ShoppingBag,Search,User,TrendingUp,FileMinus,HelpCircle,Send,Globe} from "lucide-react"; // Import relevant Lucide icons
 import { services } from "@/app/services_json_object/services";
 import { useRouter } from "next/navigation";
 
@@ -23,6 +23,16 @@ const serviceIcons: Record<string, React.ReactNode> = {
   "Code Generator": <Code className="w-10 h-10" />,
   "Blog Ideas Generator": <PenTool className="w-10 h-10" />,
   "Email Writer": <Mail className="w-10 h-10" />,
+  "Grammar Checker & Corrector": <CheckCircle className="w-10 h-10" />,
+  "Social Media Caption Generator": <MessageCircle className="w-10 h-10" />,
+  "Product Description Writer": <ShoppingBag className="w-10 h-10" />,
+  "Resume/CV Builder": <User className="w-10 h-10" />,
+  "SEO Meta Description Generator": <Search className="w-10 h-10" />,
+  "Ad Copy Generator": <TrendingUp className="w-10 h-10" />,
+  "Content Summarizer": <FileMinus className="w-10 h-10" />,
+  "Translation Tool": <Globe className="w-10 h-10" />,
+  "FAQ Generator": <HelpCircle className="w-10 h-10" />,
+  "Cold Email Writer": <Send className="w-10 h-10" />,
 };
 
 export default function Home() {
@@ -38,7 +48,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen p-6" style={{ backgroundColor: COLORS.bg }}>
+    <div className="min-h-screen p-6 mb-10 overflow-scroll" style={{ backgroundColor: COLORS.bg }}>
       {/* Search Bar */}
      <div className="mb-10 flex justify-center">
   <div className="relative w-full max-w-2xl">
