@@ -38,6 +38,8 @@ export async function GET() {
       .where(eq(history.userId, dbUser[0].id))
       .orderBy(history.createdAt);
 
+    console.log(userHistory)
+
     return Response.json({ history: userHistory });
   } catch (error) {
     console.error("Error fetching history:", error);
