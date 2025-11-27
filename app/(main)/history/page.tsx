@@ -23,7 +23,7 @@ export default function History() {
   const GetHistory = async ()=>{
     const response = await fetch("/api/get_history");
     const data = await response.json();
-    console.log(data)
+    console.log(data.history)
     sethistory(data);
   }
 
